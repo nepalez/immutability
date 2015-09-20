@@ -122,6 +122,23 @@ reborn_andrew.version # => 0
 reborn_andrew.parent  # => nil
 ```
 
+RSpec helper
+------------
+
+Include `immutability/rspec` and use `be_immutable` RSpec matcher to check, whether an instance is deeply immutable (with all its variables):
+
+```ruby
+include "immutability/rspec"
+
+describe User, ".new" do
+  subject { User.new "Andrew", 44 }
+
+  it { is_expected.to be_immutable }
+end
+```
+
+The matcher will pass if both the object and all its variables are immutable at any level of nesting.
+
 Installation
 ------------
 

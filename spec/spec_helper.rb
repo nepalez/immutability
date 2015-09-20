@@ -10,3 +10,6 @@ end
 
 # Loads the code under test
 require "immutability"
+
+# Loads custom matchers
+require "immutability/rspec"
