@@ -1,0 +1,3 @@
+--asset LICENSE
+--exclude lib/immutability/version.rb
+--output doc/api
