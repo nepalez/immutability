@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require "ice_nine"
+
 # Makes the object immutable (deeply frozen) with possibility to remember
 # and forget previous states (snapshots).
 #
@@ -62,5 +64,53 @@
 # @author Andrew Kozin <Andrew.Kozin@gmail.com>
 #
 module Immutability
+
+  # Methods to be added to class, that included the `Immutability` module
+  #
+  # @api private
+  #
+  module ClassMethods
+
+    # Reloads instance's constructor to make it immutable
+    #
+    # @api private
+    #
+    # @param [Object, Array<Object>] args
+    #
+    # @return [Object]
+    #
+    def new(*args)
+      IceNine.deep_freeze __new__(*args)
+    end
+
+    private
+
+    def __new__(*args, &block)
+      allocate.tap do |instance|
+        instance.__send__(:initialize, *args)
+        instance.instance_eval(&block) if block_given?
+      end
+    end
+
+  end # module ClassMethods
+
+  # @private
+  def self.included(klass)
+    klass.instance_exec(ClassMethods) { |mod| extend(mod) }
+  end
+
+  # Returns the new immutable instances that preserves old variables and
+  # updates some of them from inside the block
+  #
+  # @param [Proc] block
+  #   The block to be evaluated by new instance's "initializer"
+  #
+  # @return [Object] the updated instance
+  #
+  def update(&block)
+    instance = dup
+    instance.instance_eval(&block) if block_given?
+    IceNine.deep_freeze(instance)
+  end
 
 end # module Immutability

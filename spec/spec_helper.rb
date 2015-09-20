@@ -13,3 +13,6 @@ require "immutability"
 
 # Loads custom matchers
 require "immutability/rspec"
+
+# Loads shared examples
+require_relative "shared/user"
