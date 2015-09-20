@@ -2,6 +2,8 @@
 
 require "ice_nine"
 
+require_relative "immutability/with_memory"
+
 # Makes the object immutable (deeply frozen) with possibility to remember
 # and forget previous states (snapshots).
 #
