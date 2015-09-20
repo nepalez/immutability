@@ -96,11 +96,6 @@ module Immutability
 
   end # module ClassMethods
 
-  # @private
-  def self.included(klass)
-    klass.instance_exec(ClassMethods) { |mod| extend(mod) }
-  end
-
   # Returns the new immutable instances that preserves old variables and
   # updates some of them from inside the block
   #
@@ -113,6 +108,19 @@ module Immutability
     instance = dup
     instance.instance_eval(&block) if block_given?
     IceNine.deep_freeze(instance)
+  end
+
+  # @private
+  def self.included(klass)
+    klass.instance_exec(ClassMethods) { |mod| extend(mod) }
+  end
+
+  # Returns the module extended by features to record history
+  #
+  # @return [Module]
+  #
+  def self.with_memory
+    WithMemory
   end
 
 end # module Immutability

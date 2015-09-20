@@ -7,6 +7,12 @@ describe Immutability do
   let(:user) { User.new name, 44 }
   let(:name) { "Andrew" }
 
+  describe "::with_memory" do
+    subject { described_class.with_memory }
+
+    it { is_expected.to eql Immutability::WithMemory }
+  end # describe .with_memory
+
   describe ".new" do
     subject { user }
 
