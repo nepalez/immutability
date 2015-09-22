@@ -121,7 +121,7 @@ elder_andrew.at(1)  == elder_andrew # => true
 elder_andrew.at(2)  == nil          # => true
 ```
 
-This can be used to check whether two instance has a [cenancestor][cenancestor]:
+This can be used to check whether two instances has a [cenancestor][cenancestor]:
 
 ```ruby
 elder_andrew.at(0) == young_andrew.at(0) # => true
