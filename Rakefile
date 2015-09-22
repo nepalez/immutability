@@ -22,12 +22,13 @@ end
 
 desc "Runs mutation metric for testing"
 task :mutant do
-  system "mutant -r immutability --use rspec Immutability* --fail-fast"
+  system "MUTANT=true mutant -r immutability --use rspec Immutability*" \
+         " --fail-fast"
 end
 
 desc "Exhort all evils"
 task :exhort do
-  system "mutant -r immutability --use rspec Immutability*"
+  system "MUTANT=true mutant -r immutability --use rspec Immutability*"
 end
 
 desc "Runs all the necessary metrics before making a commit"

@@ -108,6 +108,25 @@ elder_andrew.version # => 1
 elder_andrew.parent.equal? young_andrew # => true
 ```
 
+You can check the previous state of the object using method `#at`:
+
+```ruby
+# relative from the current version
+elder_andrew.at(-2) == nil          # => true
+elder_andrew.at(-1) == young_andrew # => true
+
+# at some version in the past
+elder_andrew.at(0)  == young_andrew # => true
+elder_andrew.at(1)  == elder_andrew # => true
+elder_andrew.at(2)  == nil          # => true
+```
+
+This can be used to check whether two instance has a [cenancestor][cenancestor]:
+
+```ruby
+elder_andrew.at(0) == young_andrew.at(0) # => true
+```
+
 Notice, than no instances in the sequence can be garbage collected (they still refer to each other).
 
 Use `#forget_history` methods to reset version and free old instances for GC:
@@ -187,6 +206,7 @@ See the [MIT LICENSE](LICENSE).
 
 [are_we_there_yet]: http://www.infoq.com/presentations/Are-We-There-Yet-Rich-Hickey
 [aversion]: https://github.com/txus/aversion
+[cenancestor]: https://en.wikipedia.org/wiki/Last_universal_ancestor
 [codeclimate]: https://codeclimate.com/github/nepalez/immutability
 [coveralls]: https://coveralls.io/r/nepalez/immutability
 [gem]: https://rubygems.org/gems/immutability

@@ -23,7 +23,7 @@ describe Immutability::WithMemory do
 
     it "are expected" do
       expect(subject).to contain_exactly(
-        :name, :age, :version, :parent, :update, :forget_history
+        :name, :age, :version, :parent, :update, :forget_history, :at
       )
     end
   end # describe #methods
@@ -97,5 +97,44 @@ describe Immutability::WithMemory do
       expect(subject.instance_variables).to eql new_user.instance_variables
     end
   end # describe #forget_history
+
+  describe "#at" do
+    subject { three.at(point) }
+
+    let(:zero)  { user }
+    let(:one)   { zero.update }
+    let(:two)   { one.update }
+    let(:three) { two.update }
+
+    context "0" do
+      let(:point) { 0 }
+
+      it { is_expected.to eql zero }
+    end
+
+    context "positive number less than version" do
+      let(:point) { 2 }
+
+      it { is_expected.to eql two }
+    end
+
+    context "positive number greater than version" do
+      let(:point) { 4 }
+
+      it { is_expected.to be_nil }
+    end
+
+    context "negative number less than version" do
+      let(:point) { -2 }
+
+      it { is_expected.to eql one }
+    end
+
+    context "negative number greater than version" do
+      let(:point) { -4 }
+
+      it { is_expected.to be_nil }
+    end
+  end # describe #at
 
 end # describe Immutability::WithMemory

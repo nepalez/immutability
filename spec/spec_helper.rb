@@ -16,3 +16,11 @@ require "immutability/rspec"
 
 # Loads shared examples
 require_relative "shared/user"
+
+# @todo Remove after resolving of mutant PR#444
+# @see https://github.com/mbj/mutant/issues/444
+if ENV["MUTANT"]
+  RSpec.configure do |config|
+    config.around { |example| Timeout.timeout(0.5, &example) }
+  end
+end

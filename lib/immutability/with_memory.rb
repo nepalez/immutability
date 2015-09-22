@@ -65,6 +65,18 @@ module Immutability
       update { @version, @parent = 0 }
     end
 
+    # Returns an ancestor of the instance at some point in the past
+    #
+    # @param [#to_i] point
+    #   Either a positive number of version, or a negative number of versions
+    #   (snapshots) before now. +0+ stands for the first version.
+    #
+    # @return [Object, nil]
+    #
+    def at(point)
+      Object.new(self).at(point)
+    end
+
   end # module WithMemory
 
 end # module Immutability
