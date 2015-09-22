@@ -9,7 +9,7 @@
 #
 RSpec::Matchers.define :be_immutable do
   match do |instance|
-    if instance.class.respond_to? :new
+    if instance && instance.class.respond_to?(:new)
       expect(instance).to be_frozen
       instance
         .instance_variables.map(&instance.method(:instance_variable_get))
