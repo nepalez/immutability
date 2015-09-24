@@ -1,3 +1,17 @@
+## v0.0.3 2015-09-25
+
+The patch fixes bug in matcher that broke gems:
+- 'abstract_mapper',
+- 'query_builder'
+- 'attributes_dsl'
+in rbx (nepalez)
+
+### Bugs fixed
+
+- Bug in rspec matcher `be_immutable` for rbx arrays and hashes (nepalez)
+
+[Compare v0.0.2...v0.0.3](https://github.com/nepalez/immutability/compare/v0.0.2...v0.0.3)
+
 ## v0.0.2 2015-09-24
 
 The version fixes some bugs and adds `#at` method fild past states of objects with memory.
