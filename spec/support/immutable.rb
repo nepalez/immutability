@@ -8,15 +8,36 @@
 # @api public
 #
 RSpec::Matchers.define :be_immutable do
+  def can_be_frozen?(value)
+    return false if value.is_a? Module
+    return false if value.nil?
+    return false if value.equal? true
+    return false if value.equal? false
+    return false if !value.class.respond_to?(:new)
+    true
+  end
+
   match do |instance|
-    if instance && instance.class.respond_to?(:new)
+    if can_be_frozen? instance
       expect(instance).to be_frozen
-      instance
-        .instance_variables.map(&instance.method(:instance_variable_get))
-        .each { |ivar| expect(ivar).to be_immutable }
-    else
-      expect(true).to be_truthy
     end
+
+    if instance.is_a? Hash
+      instance.each do |k, v|
+        expect(k).to be_immutable
+        expect(v).to be_immutable
+      end
+    else
+      instance.instance_variables.each do |ivar|
+        expect(instance.instance_variable_get(ivar)).to be_immutable
+      end
+
+      if instance.respond_to? :each
+        instance.each { |item| expect(item).to be_immutable }
+      end
+    end
+
+    expect(true).to be_truthy
   end
 
   failure_message do |instance|
