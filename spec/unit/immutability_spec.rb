@@ -4,7 +4,7 @@ describe Immutability do
   include_context :user
   before { User.send :include, described_class }
 
-  let(:user) { User.new name, 44 }
+  let(:user) { User.new(name, 44) { "admin" } }
   let(:name) { "Andrew" }
 
   describe "::with_memory" do
@@ -16,13 +16,19 @@ describe Immutability do
   describe ".new" do
     subject { user }
 
+    it "calls the initializer" do
+      expect(subject.name).to eql name
+      expect(subject.age).to  eql 44
+      expect(subject.role).to eql "admin"
+    end
+
     it { is_expected.to be_immutable }
   end # describe .new
 
   describe "#methods" do
     subject { user.methods - Object.instance_methods }
 
-    it { is_expected.to contain_exactly(:name, :age, :update) }
+    it { is_expected.to contain_exactly(:name, :age, :role, :update) }
   end # describe #methods
 
   describe "#update" do

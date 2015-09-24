@@ -4,16 +4,22 @@ describe Immutability::WithMemory do
   include_context :user
   before { User.send :include, described_class }
 
-  let(:user) { User.new "Andrew", 44 }
+  let(:user) { User.new("Andrew", 44) { "admin" } }
 
   describe ".new" do
     subject { user }
+
+    it "calls the initializer" do
+      expect(subject.name).to eql "Andrew"
+      expect(subject.age).to  eql 44
+      expect(subject.role).to eql "admin"
+    end
 
     it { is_expected.to be_immutable }
 
     it "doesn't add hidden variables" do
       expect(subject.instance_variables).to contain_exactly(
-        :@name, :@age, :@version, :@parent
+        :@name, :@age, :@role, :@version, :@parent
       )
     end
   end # describe .new
@@ -23,7 +29,7 @@ describe Immutability::WithMemory do
 
     it "are expected" do
       expect(subject).to contain_exactly(
-        :name, :age, :version, :parent, :update, :forget_history, :at
+        :name, :age, :role, :version, :parent, :update, :forget_history, :at
       )
     end
   end # describe #methods

@@ -4,6 +4,7 @@
 
 - New decorator `Immutabitlity::Object` to iterate via past states of instance (nepalez)
 - New method `Imutability::WithMemory#at` to return a state in the past (nepalez)
+- Allow block to be send to initializer (nepalez)
 
 ### Bugs fixed
 

@@ -8,39 +8,34 @@ module Immutability
   #
   module WithMemory
 
-    # @private
-    class << self
-      private
+    include Immutability
 
-      def included(klass)
-        klass.__send__ :include, Immutability
-        klass.__send__ :extend,  ClassMethods
-        klass.__send__ :define_method, :update, update
-      end
-
-      # Redefines the +update+ so that it increment version and refer
-      # to the previous snapshot of the continuous object
-      #
-      def update
-        proc do |&block|
-          current = [(version + 1), self]
-          super() do
-            @version, @parent = current
-            instance_eval(&block) if block
-          end
-        end
-      end
-    end
-
-    # Adds version and parent variables to newly created instance
+    # Methods to be added to class, that included the `Immutability` module
+    #
+    # @api private
     #
     module ClassMethods
-      private
 
-      def __new__(*args)
-        super(*args) { @version, @parent = 0 }
+      # Reloads instance's constructor to add version and parent and make
+      # the whole instance immutable
+      #
+      # @api private
+      #
+      # @param [Object, Array<Object>] args
+      # @param [Proc] block
+      #
+      # @return [Object]
+      #
+      def new(*args, &block)
+        instance = allocate.tap do |obj|
+          obj.__send__(:initialize, *args, &block)
+          obj.instance_variable_set(:@version, 0)
+          obj.instance_variable_set(:@parent, nil)
+        end
+        IceNine.deep_freeze(instance)
       end
-    end
+
+    end # module ClassMethods
 
     # @!attribute [r] version
     #
@@ -53,6 +48,19 @@ module Immutability
     # @return [Object] the previous version (immutable instance)
     #
     attr_reader :parent
+
+    # Redefines the +update+ so that it increment version and refer
+    # to the previous snapshot of the continuous object
+    #
+    # @param [Proc] block
+    #
+    def update(&block)
+      current = [version + 1, self]
+      super do
+        @version, @parent = current
+        instance_eval(&block) if block
+      end
+    end
 
     # Forgets the previous history of the object
     #
@@ -75,6 +83,11 @@ module Immutability
     #
     def at(point)
       Object.new(self).at(point)
+    end
+
+    # @private
+    def self.included(klass)
+      klass.instance_eval { extend ClassMethods }
     end
 
   end # module WithMemory

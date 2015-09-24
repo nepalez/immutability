@@ -79,20 +79,13 @@ module Immutability
     # @api private
     #
     # @param [Object, Array<Object>] args
+    # @param [Proc] block
     #
     # @return [Object]
     #
-    def new(*args)
-      IceNine.deep_freeze __new__(*args)
-    end
-
-    private
-
-    def __new__(*args, &block)
-      allocate.tap do |instance|
-        instance.__send__(:initialize, *args)
-        instance.instance_eval(&block) if block_given?
-      end
+    def new(*args, &block)
+      instance = allocate.tap { |obj| obj.__send__(:initialize, *args, &block) }
+      IceNine.deep_freeze(instance)
     end
 
   end # module ClassMethods
@@ -106,14 +99,7 @@ module Immutability
   # @return [Object] the updated instance
   #
   def update(&block)
-    instance = dup
-    instance.instance_eval(&block) if block_given?
-    IceNine.deep_freeze(instance)
-  end
-
-  # @private
-  def self.included(klass)
-    klass.instance_exec(ClassMethods) { |mod| extend(mod) }
+    IceNine.deep_freeze dup.tap { |obj| obj.instance_eval(&block) if block }
   end
 
   # Returns the module extended by features to record history
@@ -122,6 +108,12 @@ module Immutability
   #
   def self.with_memory
     WithMemory
+  end
+
+  private
+
+  def self.included(klass)
+    klass.instance_eval { extend ClassMethods }
   end
 
 end # module Immutability
