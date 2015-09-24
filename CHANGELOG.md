@@ -1,4 +1,6 @@
-## v0.0.2 to be released
+## v0.0.2 2015-09-24
+
+The version fixes some bugs and adds `#at` method fild past states of objects with memory.
 
 ### Added
 
@@ -10,7 +12,7 @@
 
 - Bug in rspec matcher `be_immutable` under rbx (nepalez)
 
-[Compare v0.0.1...HEAD](https://github.com/nepalez/immutability/compare/v0.0.1...HEAD)
+[Compare v0.0.1...v0.0.2](https://github.com/nepalez/immutability/compare/v0.0.1...v0.0.2)
 
 ## v0.0.1 2015-09-20
 
