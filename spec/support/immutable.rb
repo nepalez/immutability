@@ -13,14 +13,12 @@ RSpec::Matchers.define :be_immutable do
     return false if value.nil?
     return false if value.equal? true
     return false if value.equal? false
-    return false if !value.class.respond_to?(:new)
+    return false unless value.class.respond_to?(:new)
     true
   end
 
   match do |instance|
-    if can_be_frozen? instance
-      expect(instance).to be_frozen
-    end
+    expect(instance).to be_frozen if can_be_frozen?(instance)
 
     if instance.is_a? Hash
       instance.each do |k, v|

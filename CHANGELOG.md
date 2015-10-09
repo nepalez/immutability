@@ -1,3 +1,11 @@
+## v0.0.4 to be released
+
+### Added
+
+- The `frozen_double` helper for attributes of immutable objects' initializers (nepalez)
+
+[Compare v0.0.3...HEAD](https://github.com/nepalez/immutability/compare/v0.0.3...HEAD)
+
 ## v0.0.3 2015-09-25
 
 The patch fixes bug in matcher that broke gems:

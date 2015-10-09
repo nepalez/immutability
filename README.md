@@ -141,8 +141,10 @@ reborn_andrew.version # => 0
 reborn_andrew.parent  # => nil
 ```
 
-RSpec helper
-------------
+RSpec
+-----
+
+### be_immutable
 
 Include `immutability/rspec` and use `be_immutable` RSpec matcher to check, whether an instance is deeply immutable (with all its variables):
 
@@ -157,6 +159,30 @@ end
 ```
 
 The matcher will pass if both the object and all its variables are immutable at any level of nesting.
+
+### frozen_double
+
+Initializers of immutable objects freeze their variables deeply. When you send doubles as arguments for this initializer, RSpec will warn you about trying to freeze that double. To avoid the problem, use `frozen_double` instead of `double`:
+
+```ruby
+include "immutability/rspec"
+
+describe User, "#name" do
+  subject { User.new(name, 44).name }
+
+  let(:name) { frozen_double :name, to_s: "Andrew" }
+
+  it { is_expected.to eql "Andrew" }
+end
+```
+
+The method returns an rspec double with two methods added:
+
+```ruby
+name = frozen_double :name, to_s: "Andrew"
+name.frozen?        # => true
+name.freeze == name # => true
+```
 
 Installation
 ------------
