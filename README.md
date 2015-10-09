@@ -162,7 +162,7 @@ The matcher will pass if both the object and all its variables are immutable at 
 
 ### frozen_double
 
-Initializers of immutable objects freeze their variables deeply. When you send doubles as arguments for this initializer, RSpec will warn you about trying to freeze that double. To avoid the problem, use `frozen_double` instead of `double`:
+Initializers of immutable objects freeze variables deeply. When you use doubles as initializers' arguments, `RSpec` will complain. To avoid this problem, use `frozen_double` instead of `double`:
 
 ```ruby
 include "immutability/rspec"
@@ -170,6 +170,7 @@ include "immutability/rspec"
 describe User, "#name" do
   subject { User.new(name, 44).name }
 
+  # the name can be used by the initializer safely
   let(:name) { frozen_double :name, to_s: "Andrew" }
 
   it { is_expected.to eql "Andrew" }
