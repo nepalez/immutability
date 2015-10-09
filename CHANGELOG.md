@@ -1,10 +1,12 @@
-## v0.0.4 to be released
+## v0.0.4 2015-09-10
+
+The small release (backward-compatible) adds `frozen_double` to rspec helper methods.
 
 ### Added
 
 - The `frozen_double` helper for attributes of immutable objects' initializers (nepalez)
 
-[Compare v0.0.3...HEAD](https://github.com/nepalez/immutability/compare/v0.0.3...HEAD)
+[Compare v0.0.3...v0.0.4](https://github.com/nepalez/immutability/compare/v0.0.3...v0.0.4)
 
 ## v0.0.3 2015-09-25
 
