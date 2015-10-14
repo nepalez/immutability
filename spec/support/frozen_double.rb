@@ -5,7 +5,7 @@ RSpec.configure do |config|
     # Returns the double with +#frozen?+ and +#freeze+ methods defined
     #
     def frozen_double(*args)
-      options  = args.pop if args.last.instance_of?(Hash)
+      options  = args.last.instance_of?(Hash) ? args.pop : {}
       name     = args.first
       instance = double name, options.merge(frozen?: true)
       allow(instance).to receive(:freeze).and_return(instance)

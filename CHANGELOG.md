@@ -1,4 +1,12 @@
-## v0.0.4 2015-09-10
+## v0.0.5 to be released
+
+### Bugs fixed
+
+- `frozen_double` can be provided without options (nepalez)
+
+[Compare v0.0.4...HEAD](https://github.com/nepalez/immutability/compare/v0.0.4...HEAD)
+
+## v0.0.4 2015-10-09
 
 The small release (backward-compatible) adds `frozen_double` to rspec helper methods.
 
