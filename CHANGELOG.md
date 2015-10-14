@@ -4,7 +4,7 @@
 
 - `frozen_double` can be provided without options (nepalez)
 
-[Compare v0.0.4...HEAD](https://github.com/nepalez/immutability/compare/v0.0.4...HEAD)
+[Compare v0.0.4...v0.0.5](https://github.com/nepalez/immutability/compare/v0.0.4...v0.0.5)
 
 ## v0.0.4 2015-10-09
 
